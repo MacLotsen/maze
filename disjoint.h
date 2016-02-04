@@ -14,6 +14,7 @@ public:
 
     int find_root(int p);
     void joint(int p, int q);
+    int size();
     int size_of(int p);
     void print();
 

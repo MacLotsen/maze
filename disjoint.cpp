@@ -29,6 +29,14 @@ void Tree::joint(int p, int q) {
     print();
 };
 
+int Tree::size() {
+    int s (0);
+    for(int i = 0; i < length; i++)
+        if(N[i] < 0)
+            s++;
+    return s;
+};
+
 int Tree::size_of(int p) {
     return N[p] * -1;
 };

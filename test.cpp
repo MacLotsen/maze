@@ -7,7 +7,9 @@
 
 int test_disjoint() {
 
-    Tree tree(9);
+    int SIZE = 9;
+
+    Tree tree(SIZE);
 
     // expected: -1 -1 -1 -1 -1 -1 -1 -1 4
     tree.joint(4, 8);
@@ -20,5 +22,9 @@ int test_disjoint() {
 
     // expect the size of 4 to be 3
     assert(tree.size_of(4) == 3);
+
+    // expect that the count of collections is ( size - 2 )
+    assert(tree.size() == SIZE - 2);
+
 
 };
