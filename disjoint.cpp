@@ -23,9 +23,9 @@ int Tree::find_root(int p) {
 };
 
 void Tree::joint(int p, int q) {
-    int parent = find_root(p);
-    N[find_root(q)] = parent;
-    N[parent]--;
+    assert(N[p] < 0 && N[q] < 0 && p != q);
+    N[q] = p;
+    N[p]--;
     print();
 };
 
