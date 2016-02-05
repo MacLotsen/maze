@@ -24,8 +24,8 @@ int Tree::find_root(int p) {
 
 void Tree::joint(int p, int q) {
     assert(N[p] < 0 && N[q] < 0 && p != q);
+    N[p] = N[p] + N[q];
     N[q] = p;
-    N[p]--;
     print();
 };
 

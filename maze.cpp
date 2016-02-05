@@ -6,29 +6,44 @@
 #include "maze.h"
 
 Maze::Maze(int width, int height) : tree(width * height ) {
-    this->size = width * height;
+    size = width * height;
+    matrix = new pair<int,int>[size];
     this->width = width;
     this->height = height;
 
+    int i (0);
+
     srand (time(NULL));
 
-    int p, q;
+    while (tree.size() > 1) {
 
-    next_relation(p, q);
+        if (i >= size)
+            throw new exception();
 
-    // TODO validation
+        int p, q, pr, qr;
+
+        next_relation(p, q);
+
+        // TODO validation
+
+        pr = tree.find_root(p);
+        qr = tree.find_root(q);
+
+        if (pr != qr) {
+            tree.joint(pr, qr);
+            pair<int, int> R (p, q);
+            matrix[i] = R;
+            cout << "new set" << endl << "p: " << p << endl << "q: " << q << endl;
+        }
+
+    }
+
 //    pair<int, int> pair (p, q);
 //    matrix.insert(pair);
 
     //matrix[p] = q;
 
     //assert(matrix[p] == q);
-
-    cout << "p: " << p << endl << "q: " << q << endl;
-
-    next_relation(p, q);
-
-    cout << "p: " << p << endl << "q: " << q << endl;
 
 };
 

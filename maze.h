@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
+#include <bits/stl_list.h>
 #include "disjoint.h"
 
 #ifndef DISJOINT_SET_MAZE_H
@@ -24,7 +25,7 @@ public:
 private:
     Tree tree;
     int width, height, size;
-    vector<pair<int, int>> matrix;
+    pair<int, int>* matrix;
     void next_relation(int &p, int &q);
 
 };
