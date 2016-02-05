@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <stdlib.h>
+#include <vector>
 #include "disjoint.h"
 
 #ifndef DISJOINT_SET_MAZE_H
@@ -15,14 +17,14 @@ using namespace std;
 class Maze {
 
 public:
-    int width, height, size;
-    Tree tree;
-
     Maze(int width, int height);
 
     void print();
 
 private:
+    Tree tree;
+    int width, height, size;
+    vector<pair<int, int>> matrix;
     void next_relation(int &p, int &q);
 
 };
