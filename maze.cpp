@@ -2,8 +2,7 @@
 // Created by Erik on 2/4/2016.
 //
 
-#include <iostream>
-#include <stdlib.h>
+#include <assert.h>
 #include "maze.h"
 
 Maze::Maze(int width, int height) : tree(width * height ) {
@@ -16,6 +15,14 @@ Maze::Maze(int width, int height) : tree(width * height ) {
     int p, q;
 
     next_relation(p, q);
+
+    // TODO validation
+//    pair<int, int> pair (p, q);
+//    matrix.insert(pair);
+
+    //matrix[p] = q;
+
+    //assert(matrix[p] == q);
 
     cout << "p: " << p << endl << "q: " << q << endl;
 
