@@ -80,7 +80,7 @@ void Maze::print() {
     for (int i = 0; i < width; i++) cout << "_.";
     cout << endl;
 
-    for (int i = 0; i < width; i++) {
+    for (int i = 0; i < height; i++) {
 
         // the opening
         if (i == 0)
@@ -88,7 +88,7 @@ void Maze::print() {
         else
             cout << '|';
 
-        for (int j = 0; j < height; j++) {
+        for (int j = 0; j < width; j++) {
 
             int p = (i * width) + j;
 

@@ -8,7 +8,7 @@ int main() {
 
     test_disjoint();
 
-    Maze maze(30, 30);
+    Maze maze(30, 60);
     maze.print();
     return 0;
 }
