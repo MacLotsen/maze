@@ -11,7 +11,7 @@ Maze::Maze(int width, int height) : tree(width * height ) {
     this->width = width;
     this->height = height;
 
-    int i (0);
+    int i;
 
     srand (time(NULL));
 
@@ -37,21 +37,30 @@ Maze::Maze(int width, int height) : tree(width * height ) {
 
     matrix_size = i;
 
+    // shrink array
+    pair<int, int> tmp[matrix_size];
+    for(int x = 0; x < matrix_size; x++) tmp[x] = matrix[x];
+
+    delete matrix;
+
+    matrix = tmp;
+
 };
 
 void Maze::next_relation(int &p, int &q) {
     p = rand() % size;
 
-    if(rand() % 2 == 1 && (p + 1) % width != 0) {
-        // take right
+    if(rand() % 2 == 1 && (p + 1) % width != 0)
+        // coinflip and has right neighbour
         q = p + 1;
-    } else if(p + width < size) {
-        // take bottom
+
+    else if(p + width < size)
+        // has bottom neighbour
         q = p + width;
-    } else {
+
+    else
         // retry
         next_relation(p, q);
-    }
 
 };
 
