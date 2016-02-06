@@ -10,7 +10,7 @@ using namespace std;
 
 Tree::Tree(int size) {
     length = size;
-    N = new int[size];
+    N = new int[length];
     for(int i = 0; i < length; i++)
         N[i] = -1;
 };

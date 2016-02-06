@@ -24,8 +24,8 @@ public:
 
 private:
     Tree tree;
-    int width, height, size, matrix_size;
-    pair<int, int>* matrix;
+    int width, height, size, edge_count;
+    pair<int, int>*S;
     void next_relation(int &p, int &q);
 
 };

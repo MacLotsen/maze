@@ -7,8 +7,8 @@
 
 Maze::Maze(int width, int height) : tree(width * height ) {
     size = width * height;
-    matrix_size = size - 1;
-    matrix = new pair<int,int>[matrix_size];
+    edge_count = size - 1;
+    S = new pair<int,int>[edge_count];
     this->width = width;
     this->height = height;
 
@@ -31,7 +31,7 @@ Maze::Maze(int width, int height) : tree(width * height ) {
         if (pr != qr && !is_open(p, q)) {
             tree.joint(pr, qr);
             pair<int, int> R (p, q);
-            matrix[i++] = R;
+            S[i++] = R;
         }
 
     }
@@ -56,8 +56,8 @@ void Maze::next_relation(int &p, int &q) {
 };
 
 bool Maze::is_open(int p, int q) {
-    for (int i = 0; i < matrix_size; i++) {
-        pair<int, int> R = matrix[i];
+    for (int i = 0; i < edge_count; i++) {
+        pair<int, int> R = S[i];
         if ( (p == R.first && q == R.second)
                 /* || (p == R.second && q == R.first) */ )
             return true;
@@ -100,7 +100,5 @@ void Maze::print() {
         cout << endl;
 
     }
-
-    cout << "0 is open: " << is_open(0, width) << ' ' << is_open(0, 1) << endl;
 
 };
