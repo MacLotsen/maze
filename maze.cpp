@@ -13,7 +13,7 @@ Maze::Maze(int width, int height) : tree(width * height ) {
 
     int i (0);
 
-    //srand (time(NULL));
+    srand (time(NULL));
 
     while (tree.size() > 1) {
 
