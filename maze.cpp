@@ -5,7 +5,7 @@
 #include <iostream>
 #include "maze.h"
 
-Maze::Maze(int width, int height) : DisjointSets(width * height ) {
+Maze::Maze(int width, int height) : tree(width * height) {
     size = width * height;
     edge_count = size - 1;
     S = new pair<int,int>[edge_count];
@@ -16,7 +16,7 @@ Maze::Maze(int width, int height) : DisjointSets(width * height ) {
 
     srand (time(NULL));
 
-    while (DisjointSets.size() > 1) {
+    while (tree.size() > 1) {
 
         if (i >= size)
             throw new exception();
@@ -25,11 +25,11 @@ Maze::Maze(int width, int height) : DisjointSets(width * height ) {
 
         next_relation(p, q);
 
-        pr = DisjointSets.find_root(p);
-        qr = DisjointSets.find_root(q);
+        pr = tree.find_root(p);
+        qr = tree.find_root(q);
 
         if (pr != qr && !is_open(p, q)) {
-            DisjointSets.joint(pr, qr);
+            tree.joint(pr, qr);
             pair<int, int> R (p, q);
             S[i++] = R;
         }

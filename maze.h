@@ -23,7 +23,7 @@ public:
     void print();
 
 private:
-    DisjointSets DisjointSets;
+    DisjointSets tree;
     int width, height, size, edge_count;
     pair<int, int>*S;
     void next_relation(int &p, int &q);
