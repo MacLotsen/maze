@@ -11,12 +11,12 @@ int test_disjoint() {
 
     Tree tree(SIZE);
 
-    // expected: -1 -1 -1 -1 -1 -1 -1 -1 4
+    // expected: -1 -1 -1 -1 -2 -1 -1 -1 4
     tree.joint(4, 8);
     assert(tree.find_root(8) == 4);
 
     // note that 8 is already replaced with 4 thanks to the find_root()
-    // expected: -1 -1  4 -1 -1 -1 -1 -1 4
+    // expected: -1 -1  4 -1 -3 -1 -1 -1 4
     tree.joint(tree.find_root(8), 2);
     assert(tree.find_root(2) == 4);
 
@@ -25,6 +25,12 @@ int test_disjoint() {
 
     // expect that the count of collections is ( size - 2 )
     assert(tree.size() == SIZE - 2);
+
+    // joining a subset
+    // expect the size to be updated
+    tree.joint(0, 1);
+    tree.joint(tree.find_root(0), tree.find_root(8));
+    assert(tree.size_of(tree.find_root(8)) == 5);
 
 
 };

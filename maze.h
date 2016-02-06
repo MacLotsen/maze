@@ -19,12 +19,12 @@ class Maze {
 
 public:
     Maze(int width, int height);
-
+    bool is_open(int p, int q);
     void print();
 
 private:
     Tree tree;
-    int width, height, size;
+    int width, height, size, matrix_size;
     pair<int, int>* matrix;
     void next_relation(int &p, int &q);
 
