@@ -7,16 +7,15 @@
 
 #endif //DISJOINT_SET_DISJOINT_H
 
-class Tree {
+class DisjointSets {
 
 public:
-    Tree(int size);
+    DisjointSets(int size);
 
     int find_root(int p);
     void joint(int p, int q);
     int size();
     int size_of(int p);
-    void print();
 
 private:
     int length;
