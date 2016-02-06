@@ -7,7 +7,8 @@
 
 Maze::Maze(int width, int height) : tree(width * height ) {
     size = width * height;
-    matrix = new pair<int,int>[size];
+    matrix_size = size - 1;
+    matrix = new pair<int,int>[matrix_size];
     this->width = width;
     this->height = height;
 
@@ -34,16 +35,6 @@ Maze::Maze(int width, int height) : tree(width * height ) {
         }
 
     }
-
-    matrix_size = i;
-
-    // shrink array
-    pair<int, int> tmp[matrix_size];
-    for(int x = 0; x < matrix_size; x++) tmp[x] = matrix[x];
-
-    delete matrix;
-
-    matrix = tmp;
 
 };
 
@@ -109,4 +100,7 @@ void Maze::print() {
         cout << endl;
 
     }
+
+    cout << "0 is open: " << is_open(0, width) << ' ' << is_open(0, 1) << endl;
+
 };
