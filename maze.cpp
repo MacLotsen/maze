@@ -5,14 +5,16 @@
 #include <iostream>
 #include "maze.h"
 
-Maze::Maze(int width, int height) : tree(width * height) {
+Maze::Maze(int width, int height) {
     size = width * height;
     edge_count = size - 1;
     S = new pair<int,int>[edge_count];
     this->width = width;
     this->height = height;
 
-    int i;
+    DisjointSets tree  (size);
+
+    int i (0);
 
     srand (time(NULL));
 
@@ -55,7 +57,7 @@ void Maze::next_relation(int &p, int &q) {
 
 };
 
-bool Maze::is_open(int p, int q) {
+bool Maze::is_open(int p, int q) const {
     for (int i = 0; i < edge_count; i++) {
         pair<int, int> R = S[i];
         if ( (p == R.first && q == R.second)
@@ -65,40 +67,18 @@ bool Maze::is_open(int p, int q) {
     return false;
 };
 
-void Maze::print() {
-    // printing the top bar
-    cout << '.';
-    for (int i = 0; i < width; i++) cout << "_.";
-    cout << endl;
+int Maze::get_size() const {
+    return size;
+}
 
-    for (int i = 0; i < height; i++) {
+int Maze::get_width() const {
+    return width;
+}
 
-        // the opening
-        if (i == 0)
-            cout << '.';
-        else
-            cout << '|';
+int Maze::get_height() const {
+    return height;
+}
 
-        for (int j = 0; j < width; j++) {
-
-            int p = (i * width) + j;
-
-            // bottom is open?
-            if(is_open(p, p + width))
-                cout << ' ';
-            else
-                cout << '_';
-
-            // end or right is open?
-            if(p == size - 1 || is_open(p, p + 1))
-                cout << '.';
-            else
-                cout << '|';
-
-        }
-
-        cout << endl;
-
-    }
-
-};
+Maze::~Maze() {
+    delete this->S;
+}

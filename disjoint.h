@@ -11,11 +11,12 @@ class DisjointSets {
 
 public:
     DisjointSets(int size);
+    ~DisjointSets();
 
-    int find_root(int p);
+    int find_root(int p) const;
     void joint(int p, int q);
-    int size();
-    int size_of(int p);
+    int size() const;
+    int size_of(int p) const;
 
 private:
     int length;

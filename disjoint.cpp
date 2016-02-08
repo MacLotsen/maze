@@ -15,7 +15,7 @@ DisjointSets::DisjointSets(int size) {
         N[i] = -1;
 };
 
-int DisjointSets::find_root(int p) {
+int DisjointSets::find_root(int p) const {
     if(N[p] < 0)
         return p;
     else
@@ -28,7 +28,7 @@ void DisjointSets::joint(int p, int q) {
     N[q] = p;
 };
 
-int DisjointSets::size() {
+int DisjointSets::size() const {
     int s (0);
     for(int i = 0; i < length; i++)
         if(N[i] < 0)
@@ -36,7 +36,11 @@ int DisjointSets::size() {
     return s;
 };
 
-int DisjointSets::size_of(int p) {
+int DisjointSets::size_of(int p) const {
     assert(N[p] < 0);
     return N[p] * -1;
 };
+
+DisjointSets::~DisjointSets() {
+    delete this->N;
+}

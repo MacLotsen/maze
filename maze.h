@@ -19,11 +19,13 @@ class Maze {
 
 public:
     Maze(int width, int height);
-    bool is_open(int p, int q);
-    void print();
+    ~Maze();
+    bool is_open(int p, int q) const;
+    int get_size() const;
+    int get_width() const;
+    int get_height() const;
 
 private:
-    DisjointSets tree;
     int width, height, size, edge_count;
     pair<int, int>*S;
     void next_relation(int &p, int &q);
