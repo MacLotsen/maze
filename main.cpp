@@ -6,20 +6,19 @@
 using namespace std;
 
 int main() {
-
     test_disjoint();
 
     Maze maze(50, 20);
 
     MazeFormatter *formatter = new ConsoleFormatter();
 
-    cout << formatter->format(maze);
+	string m = formatter->format(maze);
+    cout << m.c_str();
 
     delete formatter;
 
     // NOT IMPLEMENTED YET
     /*
-
 
     ofstream out ("new.txt", ofstream::binary);
 
