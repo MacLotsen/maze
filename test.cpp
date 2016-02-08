@@ -32,5 +32,5 @@ int test_disjoint() {
     tree.joint(tree.find_root(0), tree.find_root(8));
     assert(tree.size_of(tree.find_root(8)) == 5);
 
-
+	return 0;
 };
