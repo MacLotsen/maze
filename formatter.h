@@ -25,7 +25,7 @@ public:
 class AsciiFormatter : public MazeFormatter {
 public:
     string format(const Maze&) const;
-private:
+//private:
     static const char v_wall = 179;
     static const char v_wall_left = 180;
     static const char tr_corner = 191;

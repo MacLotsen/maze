@@ -25,13 +25,13 @@ string ConsoleFormatter::format(const Maze &maze) const {
             int p = (i * maze.get_width()) + j;
 
             // bottom is open?
-            if(maze.is_open(p, p + maze.get_width()))
+            if(maze.is_open(p, false))
                 format += ' ';
             else
                 format += '_';
 
             // end or right is open?
-            if(p == maze.get_size() - 1 || maze.is_open(p, p + 1))
+            if(p == maze.get_size() - 1 || maze.is_open(p, true))
                 format += '.';
             else
                 format += '|';
