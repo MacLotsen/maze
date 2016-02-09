@@ -7,64 +7,62 @@
 
 Maze::Maze(int width, int height) {
     size = width * height;
-    edge_count = size - 1;
-    S = new pair<int,int>[edge_count];
+    edge_count = size;
+    edges = new pair<bool,bool>[edge_count];
     this->width = width;
     this->height = height;
 
-    DisjointSets tree  (size);
+    DisjointSets tree (size);
 
-    int i (0);
+    // int i (0);
 
-    srand (time(NULL));
+    // srand (time(NULL));
 
     while (tree.size() > 1) {
 
-        if (i >= size)
-            throw new exception();
-
         int p, q, pr, qr;
 
-        next_relation(p, q);
+        short direction = -1;
+
+        next_relation(p, q, direction);
 
         pr = tree.find_root(p);
         qr = tree.find_root(q);
 
-        if (pr != qr && !is_open(p, q)) {
+        if (pr != qr && !is_open(p, direction == 1)) {
             tree.joint(pr, qr);
-            pair<int, int> R (p, q);
-            S[i++] = R;
+            if (direction == 1) {
+                edges[p].first = true;
+            } else if (direction == 2) {
+                edges[p].second = true;
+            }
         }
 
     }
 
 };
 
-void Maze::next_relation(int &p, int &q) {
+void Maze::next_relation(int &p, int &q, short &d) {
     p = rand() % size;
 
-    if(rand() % 2 == 1 && (p + 1) % width != 0)
+    if(rand() % 2 == 1 && (p + 1) % width != 0) {
         // coinflip and has right neighbour
+        d = 1;
         q = p + 1;
 
-    else if(p + width < size)
+    } else if(p + width < size) {
         // has bottom neighbour
+        d = 2;
         q = p + width;
 
-    else
+    } else
         // retry
-        next_relation(p, q);
+        next_relation(p, q, d);
 
 };
 
-bool Maze::is_open(int p, int q) const {
-    for (int i = 0; i < edge_count; i++) {
-        pair<int, int> R = S[i];
-        if ( (p == R.first && q == R.second)
-                /* || (p == R.second && q == R.first) */ )
-            return true;
-    }
-    return false;
+bool Maze::is_open(const int index, const bool is_right) const {
+    return is_right ? edges[index].first : edges[index].second;
 };
 
 int Maze::get_size() const {
@@ -80,5 +78,5 @@ int Maze::get_height() const {
 }
 
 Maze::~Maze() {
-    delete this->S;
+    delete this->edges;
 }
