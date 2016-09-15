@@ -5,8 +5,6 @@
 #ifndef DISJOINT_SET_DISJOINT_H
 #define DISJOINT_SET_DISJOINT_H
 
-#endif //DISJOINT_SET_DISJOINT_H
-
 class DisjointSets {
 
 public:
@@ -23,3 +21,5 @@ private:
     int* N;
 
 };
+
+#endif //DISJOINT_SET_DISJOINT_H
