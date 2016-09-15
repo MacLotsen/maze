@@ -2,21 +2,19 @@
 // Created by Erik on 2/4/2016.
 //
 
-#include <iostream>
+#include <stdlib.h>
 #include "maze.h"
 
 Maze::Maze(int width, int height) {
     size = width * height;
     edge_count = size;
-    edges = new pair<bool,bool>[edge_count];
+    edges = new std::pair<bool, bool>[edge_count];
     this->width = width;
     this->height = height;
 
-    DisjointSets tree (size);
+    DisjointSets tree(size);
 
-    // int i (0);
-
-    // srand (time(NULL));
+    srand(time(NULL));
 
     while (tree.size() > 1) {
 
@@ -45,12 +43,12 @@ Maze::Maze(int width, int height) {
 void Maze::next_relation(int &p, int &q, short &d) {
     p = rand() % size;
 
-    if(rand() % 2 == 1 && (p + 1) % width != 0) {
+    if (rand() % 2 == 1 && (p + 1) % width != 0) {
         // coinflip and has right neighbour
         d = 1;
         q = p + 1;
 
-    } else if(p + width < size) {
+    } else if (p + width < size) {
         // has bottom neighbour
         d = 2;
         q = p + width;

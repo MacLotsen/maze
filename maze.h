@@ -2,15 +2,11 @@
 // Created by Erik on 2/4/2016.
 //
 
-#include <iostream>
-#include <stdlib.h>
-#include <vector>
-#include "disjoint.h"
-
 #ifndef DISJOINT_SET_MAZE_H
 #define DISJOINT_SET_MAZE_H
 
-using namespace std;
+#include "disjoint.h"
+#include <tuple>
 
 class Maze {
 
@@ -24,7 +20,7 @@ public:
 
 private:
     int width, height, size, edge_count;
-    pair<bool, bool>*edges;
+    std::pair<bool, bool>*edges;
     void next_relation(int &p, int &q, short &d);
 
 };

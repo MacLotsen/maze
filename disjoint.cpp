@@ -2,11 +2,8 @@
 // Created by Erik on 2/4/2016.
 //
 
-#include <iostream>
 #include <assert.h>
 #include "disjoint.h"
-
-using namespace std;
 
 DisjointSets::DisjointSets(int size) {
     length = size;
