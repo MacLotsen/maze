@@ -10,8 +10,6 @@
 #ifndef DISJOINT_SET_MAZE_H
 #define DISJOINT_SET_MAZE_H
 
-#endif //DISJOINT_SET_MAZE_H
-
 using namespace std;
 
 class Maze {
@@ -30,3 +28,5 @@ private:
     void next_relation(int &p, int &q, short &d);
 
 };
+
+#endif //DISJOINT_SET_MAZE_H
