@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.3)
-project(disjoint_set)
+project(cmaze)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -Wall")
 
-set(SOURCE_FILES main.cpp disjoint.h disjoint.cpp maze.h maze.cpp test.cpp test.h formatter.cpp formatter.h asciiformatter.cpp)
-add_executable(disjoint_set ${SOURCE_FILES})
+enable_testing()
+
+add_subdirectory(src)
