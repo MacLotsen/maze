@@ -13,22 +13,24 @@ extern "C" {
 #define coinflip() (rand() % 2)
 
 typedef enum tile_mask {
-    NONE_OPEN = 0x00,
-    TOP_OPEN = 0x01,
-    RIGHT_OPEN = 0x02,
-    BOTTOM_OPEN = 0x04,
-    LEFT_OPEN = 0x08
+  NONE_OPEN = 0x00,
+  TOP_OPEN = 0x01,
+  RIGHT_OPEN = 0x02,
+  BOTTOM_OPEN = 0x04,
+  LEFT_OPEN = 0x08
 } tile_mask_t;
 
 typedef struct maze {
-    int width;
-    int height;
-    int size;
-    int* tiles;
+  int width;
+  int height;
+  int size;
+  char* tiles;
 } maze_t;
 
 maze_t* create_maze(int width, int height);
 void destroy_maze(maze_t* maze);
+
+int farthest_tile(maze_t* maze, int from);
 
 #ifdef __cplusplus
 }

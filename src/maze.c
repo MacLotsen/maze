@@ -6,40 +6,51 @@
 #include "maze.h"
 #include "disjoint-sets.h"
 
-static void next_relation(maze_t *_maze, disjoint_sets_t *_disjoint_sets, int *p, int *q, int *d) {
+
+static int within_bounds(maze_t* _maze, int _tile, char _dir) {
+  switch(_dir) {
+    case TOP_OPEN:
+      return _tile - _maze->width >= 0;
+    case RIGHT_OPEN:
+      return (_tile + 1) % _maze->width != 0;
+    case BOTTOM_OPEN:
+      return _tile + _maze->width < _maze->size;
+    case LEFT_OPEN:
+      return (_tile -1) > 0 && (_tile) % _maze->width != 0;
+    default:
+      return -1;
+    }
+}
+
+
+static void next_relation(maze_t *_maze, disjoint_sets_t *_disjoint_sets, int *p, int *q, char *d) {
     int offset = rand() % _disjoint_sets->size;
     for (int i = offset; 1; i++) {
         i = i % _disjoint_sets->size;
 
         *p = i;
 
-        int dir;
+        char dir;
         dir = coinflip() ? BOTTOM_OPEN : RIGHT_OPEN;
 
+        if (!within_bounds(_maze, *p, dir))
+            continue;
+
         if (dir & TOP_OPEN) {
-            if (*p - _maze->width < 0)
-                continue;
-            *d = dir;
             *q = *p - _maze->width;
         } else if (dir & RIGHT_OPEN) {
-            if ((*p + 1) % _maze->width == 0)
-                continue;
-            *d = dir;
             *q = *p + 1;
         } else if (dir & BOTTOM_OPEN) {
-            if (*p + _maze->width >= _maze->size)
-                continue;
-            *d = dir;
             *q = *p + _maze->width;
         } else if (dir & LEFT_OPEN) {
-            if ((*p - 1) < 0 || (*p - 1) % _maze->width == 0)
-                continue;
             *q = *p - 1;
         }
+        *d = dir;
 
         return;
     }
 }
+
 
 maze_t *create_maze(int width, int height) {
     int size = width * height;
@@ -53,8 +64,8 @@ maze_t *create_maze(int width, int height) {
 
     while (size_of_sets(_disjoint_sets) > 1) {
 
-        int p, q, pr, qr, dir;
-        dir = 0;
+        int p, q, pr, qr;
+        char dir = 0;
 
         p = rand() % size;
         q = rand() % size;
@@ -78,7 +89,69 @@ maze_t *create_maze(int width, int height) {
     return _maze;
 }
 
+
 void destroy_maze(maze_t *maze) {
     free(maze->tiles);
     free(maze);
+}
+
+
+static void walk_maze(maze_t *maze, int **costs, int cx, int cy) {
+    int ci = cy * maze->width + cx;
+    int cur_val = costs[cy][cx];
+
+    int adjacent_tiles[] = {
+            ci - maze->width,
+            ci + 1,
+            ci + maze->width,
+            ci - 1
+    };
+
+    for (int i = 0; i < 4; i++) {
+        int ti = adjacent_tiles[i];
+        int tx = ti % maze->width;
+        int ty = ti / maze->width;
+
+
+        if (ti < 0 || ti >= maze->size
+                || !within_bounds(maze, ci, (1 << i))
+                || !(maze->tiles[ci] & (1 << i))
+                || costs[ty][tx] != -1)
+            continue;
+
+        costs[ty][tx] = cur_val+1;
+        walk_maze(maze, costs, tx, ty);
+    }
+}
+
+
+int farthest_tile(maze_t *maze, int from) {
+    int max = -1;
+    int max_tile = -1;
+    int fx = from % maze->width;
+    int fy = from / maze->width;
+    int **costs;
+    costs = malloc(sizeof(int*) * maze->height);
+    for (int i = 0; i < maze->height; i++) {
+        costs[i] = malloc(sizeof(int) * maze->width);
+        for (int j = 0; j < maze->width; j++) {
+            costs[i][j] = -1;
+        }
+    }
+
+    costs[fy][fx] = 0;
+
+    walk_maze(maze, costs, fx, fy);
+
+    for (int i = 0; i < maze->size; i++) {
+        int cur = costs[i / maze->width][i % maze->width];
+        if (cur > max) {
+            max = cur;
+            max_tile = i;
+        }
+    }
+
+    free(costs);
+
+    return max_tile;
 }

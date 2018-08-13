@@ -153,7 +153,7 @@ static const wchar_t chunk15[] = {
 void box_drawing_renderer(maze_t *maze) {
 //    setvbuf (stdout, NULL, _IONBF, 0);
     const wchar_t **chunk_map = (const wchar_t **) malloc(maze->size * sizeof(const wchar_t *));
-    
+
     for (int i = 0; i < maze->size; i++) {
         switch (maze->tiles[i]) {
             case 0:
@@ -209,13 +209,12 @@ void box_drawing_renderer(maze_t *maze) {
     for (int i = 0; i < maze->height; i++) {
         for (int k = 0; k < 3; k++) {
             int offset = k * 3;
+            move(i*3+k,0);
             for (int j = 0; j < maze->width; j++) {
                 int index = i * maze->width + j;
-                printf("%lc%lc%lc%lc%lc", chunk_map[index][offset], chunk_map[index][offset+1], chunk_map[index][offset+1], chunk_map[index][offset+1], chunk_map[index][offset+2]);
+                printw("%lc%lc%lc%lc%lc", chunk_map[index][offset], chunk_map[index][offset+1], chunk_map[index][offset+1], chunk_map[index][offset+1], chunk_map[index][offset+2]);
             }
-            printf("\n");
         }
-//        printf("\n");
     }
-    fflush(stdout);
+    refresh();
 }

@@ -9,6 +9,12 @@
 extern "C" {
 #endif
 
+#ifdef _WIN32
+#include <conio.h>
+#else
+#include <curses.h>
+#endif
+
 #include "maze.h"
 
 void simple_renderer(maze_t *maze);

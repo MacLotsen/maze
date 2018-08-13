@@ -25,7 +25,7 @@ void simple_renderer(maze_t *maze) {
     // fill left bar
     for (int yi = 0; yi < maze->height; yi++) {
         int y = yi + 1;
-        print_grid[y][0] = (char) ((maze->tiles[yi] & LEFT_OPEN) ? '.' : '|');
+        print_grid[y][0] = (char) ((maze->tiles[yi*maze->width] & LEFT_OPEN) ? '.' : '|');
     }
 
     // fill right, bottom
@@ -43,6 +43,8 @@ void simple_renderer(maze_t *maze) {
 
     // print the print grid
     for (int x = 0; x < print_height; x++) {
+//        mvprintw(x, 0, print_grid[x]);
         printf("%s\n", print_grid[x]);
     }
+    refresh();
 }
