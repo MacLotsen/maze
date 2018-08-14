@@ -3,6 +3,10 @@ project(cmaze)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -Wall -lncurses")
 
+find_package(Curses)
+
+include_directories(${CURSES_INCLUDE_DIR})
+
 enable_testing()
 
 add_subdirectory(src)
