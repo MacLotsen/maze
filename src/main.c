@@ -20,6 +20,7 @@ void quit() {
 
 
 int main(int argc, char **argv) {
+    // Default option values
     int flag_simple = 0;
     int flag_interactive = 0;
     int value_width = 15;
@@ -28,6 +29,7 @@ int main(int argc, char **argv) {
 
     opterr = 0;
 
+    // Parsing options passed through commandline
     while ((c = getopt(argc, argv, "siw:h:")) != -1)
         switch (c) {
             case 's':
@@ -50,11 +52,13 @@ int main(int argc, char **argv) {
 
     setlocale(LC_ALL, "");
 
+    // Setup NCurses
     signal(SIGINT, quit);
     initscr();
     cbreak();
     noecho();
 
+    // Simple drawer is too compact to use interactively.
     if (flag_simple && flag_interactive) {
         printw("Error: cannot use simple while playing interactively.");
         quit();
@@ -62,6 +66,8 @@ int main(int argc, char **argv) {
 
     // create maze
     maze_t *maze = create_maze(value_width, value_height);
+
+    // Multiple examples showing how to manually open walls in the maze
 
     // open top-right corner
     //maze->tiles[value_width-1] |= TOP_OPEN;
@@ -84,7 +90,15 @@ int main(int argc, char **argv) {
         int cur_x = 2;
         int cur_y = 1;
 
+        // Always set the end point farthest away from beginning point
+        int end_i = farthest_tile(maze, cur_i);
+        int end_x = (end_i % maze->width) * 5 + 2;
+        int end_y = (end_i / maze->width) * 3 + 1;
+        move(end_y, end_x);
+        addch(ACS_BOARD);
+
         move(cur_y, cur_x);
+        refresh();
 
         do {
             input = getch();
@@ -93,7 +107,7 @@ int main(int argc, char **argv) {
                 continue;
 
             if (control_state == 2) {
-
+                // Calculate move
                 switch (input) {
                     case 0x41:
                         if (maze->tiles[cur_i] & TOP_OPEN) {
@@ -123,8 +137,22 @@ int main(int argc, char **argv) {
 
                 control_state = 0;
                 move(cur_y, cur_x);
+
+                // Check end condition after every move, and regenerate maze.
+                if (cur_i == end_i) {
+                    destroy_maze(maze);
+                    maze = create_maze(value_width, value_height);
+                    box_drawing_renderer(maze);
+                    end_i = farthest_tile(maze, cur_i);
+                    end_x = (end_i % maze->width) * 5 + 2;
+                    end_y = (end_i / maze->width) * 3 + 1;
+                    move(end_y, end_x);
+                    addch(ACS_BOARD);
+                    move(cur_y, cur_x);
+                }
             }
 
+            // Check if the inputs have an arrow sequence (0x1B 0x5B 0x41-0x44)
             if (input == 0x1B) {
                 control_state = 1;
             } else if (input == 0x5B) {
@@ -135,8 +163,6 @@ int main(int argc, char **argv) {
             }
         } while (input != 'q');
     }
-
-    farthest_tile(maze, 0);
 
     destroy_maze(maze);
 

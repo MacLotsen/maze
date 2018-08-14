@@ -6,6 +6,12 @@
 #include "maze-renderer.h"
 
 /**
+ * All chunks are Unicode characters which some terminals may not print right.
+ * The problem is solved by using 'print_box_ch' function (last function in this file...).
+ * If you happen to know to fit those ASC_<?> in such arrays, please send a pull request or create a ticket.
+ */
+
+/**
  * All closed
  */
 static const wchar_t chunk0[] = {
@@ -150,10 +156,44 @@ static const wchar_t chunk15[] = {
 };
 
 
+/**
+ * Proxy printer
+ *
+ * Accepts a unicode character and prints the corresponding NCurses definition.
+ * @param c
+ */
+static void print_box_ch(wchar_t c) {
+    // This is a hot fix. It's ugly and doesn't belong here.
+    // On the other hand, this program is just a simple maze printer.
+    // Therefore all this logic will not be added to the maze library.
+    switch(c) {
+        case 0x250c:
+            addch(ACS_ULCORNER); break;
+        case 0x2500:
+            addch(ACS_HLINE); break;
+        case 0x2510:
+            addch(ACS_URCORNER); break;
+        case 0x2502:
+            addch(ACS_VLINE); break;
+        case 0x2514:
+            addch(ACS_LLCORNER); break;
+        case 0x2518:
+            addch(ACS_LRCORNER); break;
+        default:
+            addch(0x0020);
+    }
+}
+
+
+/**
+ * Pretty print the maze with box drawing characters.
+ * @param maze
+ */
 void box_drawing_renderer(maze_t *maze) {
-//    setvbuf (stdout, NULL, _IONBF, 0);
+    // A map of the maze tiles that will be mapped with the corresponding chunks
     const wchar_t **chunk_map = (const wchar_t **) malloc(maze->size * sizeof(const wchar_t *));
 
+    // The mapping...
     for (int i = 0; i < maze->size; i++) {
         switch (maze->tiles[i]) {
             case 0:
@@ -206,15 +246,24 @@ void box_drawing_renderer(maze_t *maze) {
                 break;
         }
     }
+
+    // Print that stuff
     for (int i = 0; i < maze->height; i++) {
         for (int k = 0; k < 3; k++) {
             int offset = k * 3;
             move(i*3+k,0);
             for (int j = 0; j < maze->width; j++) {
                 int index = i * maze->width + j;
-                printw("%lc%lc%lc%lc%lc", chunk_map[index][offset], chunk_map[index][offset+1], chunk_map[index][offset+1], chunk_map[index][offset+1], chunk_map[index][offset+2]);
+
+                // Notice the extra padding added in the width
+                print_box_ch(chunk_map[index][offset]);
+                print_box_ch(chunk_map[index][offset+1]);
+                print_box_ch(chunk_map[index][offset+1]);
+                print_box_ch(chunk_map[index][offset+1]);
+                print_box_ch(chunk_map[index][offset+2]);
             }
         }
     }
-    refresh();
+
+    free(chunk_map);
 }

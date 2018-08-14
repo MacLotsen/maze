@@ -7,6 +7,15 @@
 #include "disjoint-sets.h"
 
 
+/**
+ * Returns true if the given tile and direction (adjacent tile) is within the field of the maze.
+ * For example. When taking tile zero (first tile in the maze) and direction left, it will return false.
+ *
+ * @param _maze
+ * @param _tile
+ * @param _dir
+ * @return
+ */
 static int within_bounds(maze_t* _maze, int _tile, char _dir) {
   switch(_dir) {
     case TOP_OPEN:
@@ -16,16 +25,26 @@ static int within_bounds(maze_t* _maze, int _tile, char _dir) {
     case BOTTOM_OPEN:
       return _tile + _maze->width < _maze->size;
     case LEFT_OPEN:
-      return (_tile -1) > 0 && (_tile) % _maze->width != 0;
+      return (_tile -1) >= 0 && _tile % _maze->width != 0;
     default:
       return -1;
     }
 }
 
 
+/**
+ * This function decides the next two tiles to connect with each other.
+ *
+ * @param _maze
+ * @param _disjoint_sets
+ * @param p
+ * @param q
+ * @param d
+ */
 static void next_relation(maze_t *_maze, disjoint_sets_t *_disjoint_sets, int *p, int *q, char *d) {
-    int offset = rand() % _disjoint_sets->size;
-    for (int i = offset; 1; i++) {
+    // Just begin somewhere...
+    for (int i = 0; 1; i++) {
+        // Always ensure a clean index (Preventing out of bounds)
         i = i % _disjoint_sets->size;
 
         *p = i;
@@ -35,6 +54,7 @@ static void next_relation(maze_t *_maze, disjoint_sets_t *_disjoint_sets, int *p
 
         if (!within_bounds(_maze, *p, dir))
             continue;
+
 
         if (dir & TOP_OPEN) {
             *q = *p - _maze->width;
@@ -96,10 +116,22 @@ void destroy_maze(maze_t *maze) {
 }
 
 
+/**
+ * This function will -- at the end -- fill the costs with steps taken from the starting point.
+ * @param maze
+ * @param costs
+ * @param cx
+ * @param cy
+ */
 static void walk_maze(maze_t *maze, int **costs, int cx, int cy) {
+    // This function will call itself for adjacent tiles which are valid moves.
+    // At the end this function will iterate/call itself N times.
+    // When this function is done, the costs grid will be filled with the step count for each tile.
+
     int ci = cy * maze->width + cx;
     int cur_val = costs[cy][cx];
 
+    // Notice that this order has the same as the tile_mask_t enumeration
     int adjacent_tiles[] = {
             ci - maze->width,
             ci + 1,
@@ -107,6 +139,7 @@ static void walk_maze(maze_t *maze, int **costs, int cx, int cy) {
             ci - 1
     };
 
+    // Try all adjacent tiles
     for (int i = 0; i < 4; i++) {
         int ti = adjacent_tiles[i];
         int tx = ti % maze->width;
@@ -125,7 +158,18 @@ static void walk_maze(maze_t *maze, int **costs, int cx, int cy) {
 }
 
 
+/**
+ * Returns the farthest point from starting point.
+ * This is useful for determining the end point.
+ *
+ * @param maze
+ * @param from
+ * @return
+ */
 int farthest_tile(maze_t *maze, int from) {
+    // For those who read this code, this is not dijkstra since many benefits are useless for a maze.
+    // Every possible move is calculated and the first farthest point is returned.
+
     int max = -1;
     int max_tile = -1;
     int fx = from % maze->width;
@@ -139,10 +183,13 @@ int farthest_tile(maze_t *maze, int from) {
         }
     }
 
+    // Set current position as zero moves done
     costs[fy][fx] = 0;
 
+    // Walk the maze recursively
     walk_maze(maze, costs, fx, fy);
 
+    // Just take the first farthest point
     for (int i = 0; i < maze->size; i++) {
         int cur = costs[i / maze->width][i % maze->width];
         if (cur > max) {

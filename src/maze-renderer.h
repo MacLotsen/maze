@@ -12,6 +12,7 @@ extern "C" {
 #ifdef _WIN32
 #include <conio.h>
 #else
+#define _GNU_SOURCE
 #include <curses.h>
 #endif
 
