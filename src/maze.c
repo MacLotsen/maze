@@ -42,8 +42,8 @@ static int within_bounds(maze_t* _maze, int _tile, char _dir) {
  * @param d
  */
 static void next_relation(maze_t *_maze, disjoint_sets_t *_disjoint_sets, int *p, int *q, char *d) {
-    // Just begin somewhere...
-    for (int i = 0; 1; i++) {
+    // Use P (a random point within the maze's bounds) as a starting point.
+    for (int i = *p;; i++) {
         // Always ensure a clean index (Preventing out of bounds)
         i = i % _disjoint_sets->size;
 
