@@ -15,23 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.3)
 project(maze)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -Wall")
+find_package(Curses)
 
-enable_testing()
+include_directories(${CURSES_INCLUDE_DIR})
 
-add_subdirectory(libmaze)
-add_subdirectory(maze)
+add_executable(draw_maze ${MAZE_HEADERS} maze-renderer.h main.c simple-renderer.c box-drawing-renderer.c)
+target_link_libraries(draw_maze maze ${CURSES_LIBRARIES})
 
-if(NOT TARGET uninstall)
-    configure_file(
-            "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
-            "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-            IMMEDIATE @ONLY)
-
-    add_custom_target(uninstall
-            COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
-endif()
-
+install(TARGETS draw_maze
+        DESTINATION bin)
