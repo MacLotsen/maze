@@ -39,7 +39,7 @@ Use the following procedure to get and build the maze generator.
 
 If you're only interested in using the library for development, make sure to take a look at `maze.h`.
 
-### Prerequisites
+## Prerequisites
 For building the project the following dependencies are required.
  * GCC
  * CMake
@@ -49,7 +49,7 @@ For the binary `draw_maze` you need the following dependencies.
  
 No dependencies are required for `libmaze`.
 
-### Installing
+## Installing
 If you have already built the project you can just use `make install`.
 
 ## License
