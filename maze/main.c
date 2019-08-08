@@ -66,16 +66,18 @@ int main(int argc, char **argv) {
 
     setlocale(LC_ALL, "");
 
-    // Setup NCurses
-    signal(SIGINT, quit);
-    initscr();
-    cbreak();
-    noecho();
+    // Setup NCurses, except for simple drawer, since some terminals don't support NCurses
+    if (!flag_simple) {
+        signal(SIGINT, quit);
+        initscr();
+        cbreak();
+        noecho();
+    }
 
     // Simple drawer is too compact to use interactively.
     if (flag_simple && flag_interactive) {
-        printw("Error: cannot use simple while playing interactively.");
-        quit();
+        printf("Error: cannot use simple while playing interactively.");
+        return 1;
     }
 
     // create maze
@@ -106,8 +108,8 @@ int main(int argc, char **argv) {
 
         // Always set the end point farthest away from beginning point
         int end_i = farthest_tile(maze, cur_i);
-        int end_x = (end_i % maze->width) * 5 + 2;
-        int end_y = (end_i / maze->width) * 3 + 1;
+        int end_x = (end_i % (int) maze->width) * 5 + 2;
+        int end_y = (end_i / (int) maze->width) * 3 + 1;
         move(end_y, end_x);
         addch(ACS_BOARD);
 

@@ -26,25 +26,31 @@ extern "C" {
 #define opposite(direction) (((direction) < 4) ? direction << 2: direction >> 2)
 #define coinflip() (rand() % 2)
 
-typedef enum tile_mask {
-  NONE_OPEN = 0x00,
-  TOP_OPEN = 0x01,
-  RIGHT_OPEN = 0x02,
-  BOTTOM_OPEN = 0x04,
-  LEFT_OPEN = 0x08
-} tile_mask_t;
+    typedef unsigned int tile_t;
+    typedef unsigned char direction_t;
 
-typedef struct maze {
-  int width;
-  int height;
-  int size;
-  char* tiles;
-} maze_t;
+    typedef enum tile_mask {
+      NONE_OPEN = 0x00,
+      TOP_OPEN = 0x01,
+      RIGHT_OPEN = 0x02,
+      BOTTOM_OPEN = 0x04,
+      LEFT_OPEN = 0x08
+    } tile_mask_t;
 
-maze_t* create_maze(int width, int height);
-void destroy_maze(maze_t* maze);
+    typedef struct maze {
+      unsigned int width;
+      unsigned int height;
+      unsigned int size;
+      direction_t* tiles;
+    } maze_t;
 
-int farthest_tile(maze_t* maze, int from);
+    maze_t* create_maze(int width, int height);
+    void destroy_maze(maze_t* maze);
+
+    int is_within_bounds(maze_t const *maze, tile_t p, direction_t direction);
+    tile_t adjacent_tile(maze_t const *maze, tile_t p, direction_t direction);
+
+    int farthest_tile(maze_t const *maze, tile_t from);
 
 #ifdef __cplusplus
 }

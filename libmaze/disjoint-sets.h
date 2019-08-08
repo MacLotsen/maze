@@ -24,21 +24,21 @@ extern "C" {
 #endif
 
 typedef struct disjoint_sets {
-    int size;
+    unsigned int size;
     int* values;
 } disjoint_sets_t;
 
-disjoint_sets_t* create_disjoint_sets(int grid_length);
+disjoint_sets_t* create_disjoint_sets(unsigned int grid_length);
 
 void destroy_disjoint_sets(disjoint_sets_t *sets);
 
-int find_root(disjoint_sets_t* sets, int index);
+unsigned int find_root(disjoint_sets_t *sets, unsigned int index);
 
-int joint(disjoint_sets_t* sets, int set_i, int set_j);
+int create_joint(disjoint_sets_t *sets, unsigned int set_i, unsigned int set_j);
+int are_joined(disjoint_sets_t *sets, unsigned int set_i, unsigned int set_j);
 
-int size_of_sets(disjoint_sets_t *sets);
-
-int size_of(disjoint_sets_t* sets, int set_i);
+int size_of_sets(disjoint_sets_t const *sets);
+int size_of(disjoint_sets_t const *sets, unsigned int set_i);
 
 #ifdef __cplusplus
 }
